@@ -1,16 +1,19 @@
 import React, {useContext, useState} from "react";
+
+// material-ui
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import {Dialog} from "@material-ui/core";
-import {LoginDialog} from "./User/LoginDialog";
-import {UserContext} from "./User/User";
 import Box from "@material-ui/core/Box"
-import {SignUpDialog} from "./User/SignUpDialog";
+import Button from '@material-ui/core/Button';
+import Dialog from "@material-ui/core/Dialog";
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from "@material-ui/core/Typography";
+
+import {LoginDialog} from "./User/LoginDialog";
+import {UserContext} from "./Providers/UserProvider";
+import {SignUpDialog} from "./User/SignUpDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,13 +1,8 @@
 import Cookies from "js-cookie"
-export let token: null|string = null
 
-export type Success = {
-  status: "success"
-}
-export type Failure = {
-  status: "failure",
-  reason: string
-}
+export const apiURL = "https://shrouded-thicket-03801.herokuapp.com/"
+
+export let token: null|string = null
 
 const myFetch = (input: RequestInfo, init?: RequestInit) => {
   return fetch(input, init)

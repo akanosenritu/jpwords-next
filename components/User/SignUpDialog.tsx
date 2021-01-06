@@ -3,7 +3,7 @@ import {Box, Button, CircularProgress, DialogTitle} from "@material-ui/core";
 import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import {FormikErrors, useFormik} from "formik";
-import {UserContext} from "./User";
+import {UserContext} from "../Providers/UserProvider";
 
 type SignUpInfo = {
   username: string,

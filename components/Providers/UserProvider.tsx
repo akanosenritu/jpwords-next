@@ -1,16 +1,25 @@
 import React, {useEffect, useState} from "react";
-import {getUserData, initialUserData, setUserData} from "../../localStorage/userDataStorage"
-import * as api from "../../api/apiUser"
-import {ResetPasswordResult} from "../../api/apiUser"
+import {getUserData, initialUserData, setUserData} from "../../utils/localStorage/UserData"
+import * as api from "../../utils/User"
+import {defaultValueFailure} from "../../types/Result";
 
 export type AnonymousUser = {
   status: "Anonymous"
 }
-export type AuthenticatedUser = {
+export type NormalUser = {
   status: "Authenticated",
   username: string,
 }
+export type AdminUser = {
+  status: "Admin",
+  username: string
+}
+export type StaffUser = {
+  status: "Staff",
+  username: string
+}
 
+export type AuthenticatedUser = NormalUser | AdminUser | StaffUser
 export type User = AnonymousUser | AuthenticatedUser
 
 type UserContextValue = {
@@ -24,28 +33,16 @@ type UserContextValue = {
 const defaultUserContextValue = {
   user: {status: "Anonymous"} as AnonymousUser,
   login: async () => {
-    return {
-      status: "failure",
-      reason: "(initial value)"
-    } as api.LoginResult
+    return defaultValueFailure
   },
   logout: async () => {
-    return {
-      status: "failure",
-      reason: "(initial value)"
-    } as api.LogoutResult
+    return defaultValueFailure
   },
   signUp: async () => {
-    return {
-      status: "failure",
-      reason: "(initial value)"
-    } as api.SignUpResult
+    return defaultValueFailure
   },
   resetPassword: async () => {
-    return {
-      status: "failure",
-      reason: "(initial value)"
-    } as ResetPasswordResult
+    return defaultValueFailure
   }
 }
 
@@ -53,29 +50,36 @@ export const UserContext = React.createContext<UserContextValue>(defaultUserCont
 
 export const UserProvider: React.FC = (props) => {
   const [user, setUser] = useState<User>({status: "Anonymous"})
-  useEffect(() => {
-    api.isLoggedIn()
-      .then(bool => {
-        if (bool) {
-          setUser({
-            status: "Authenticated",
-            username: getUserData(initialUserData).username
-          })
-        }})
-  }, [])
-  const login = async (username: string, password: string) => {
-    return api.login(username, password)
-      .then(result => {
-        if (result.status === "success") {
-          setUser({
-            status: "Authenticated",
-            username: username
-          })
-          setUserData({username: username})
-        }
-        return result
-      })
+
+  const verifyStatus = async () => {
+    const username = getUserData(initialUserData).username
+    const result = await api.isLoggedIn()
+    if (result.status === "success" && result.isLoggedIn) {
+      let user: User
+      if (result.isAdmin) user = {status: "Admin", username}
+      else if (result.isStaff) user = {status: "Staff", username}
+      else user = {status: "Authenticated", username}
+      setUser(user)
+    }
   }
+  useEffect(() => {
+    verifyStatus()
+  }, [])
+
+  const login = async (username: string, password: string) => {
+    const result = await api.login(username, password)
+    if (result.status === "success") {
+      let user: User
+      if (result.isAdmin) user = {status: "Admin", username}
+      else if (result.isStaff) user = {status: "Staff", username}
+      else user = {status: "Authenticated", username}
+
+      setUser(user)
+      setUserData({username: username})
+    }
+    return result
+  }
+
   const logout = async () => {
     return api.logout()
       .then(result => {

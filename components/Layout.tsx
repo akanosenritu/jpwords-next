@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
 import {Navigation} from "./Navigation";
-import {UserProvider} from "./User/User";
+import {UserProvider} from "./Providers/UserProvider";
+import {PracticeHistoryProvider} from "./Providers/PracticeHistoryProvider";
 
 type Props = {
   children?: ReactNode
@@ -17,10 +18,12 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
     </Head>
     <div>
       <UserProvider>
-        <Navigation />
-        <div style={{minWidth: 320, maxWidth: 700, margin: "auto", position:"relative"}}>
-          {children}
-        </div>
+        <PracticeHistoryProvider>
+          <Navigation />
+          <div style={{minWidth: 320, maxWidth: 700, margin: "auto", position:"relative"}}>
+            {children}
+          </div>
+        </PracticeHistoryProvider>
       </UserProvider>
     </div>
   </div>

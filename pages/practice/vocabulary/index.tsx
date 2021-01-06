@@ -1,13 +1,19 @@
-import React, {useEffect, useState} from "react";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import React, {useEffect, useState} from "react"
+
+// material-ui
+import Box from "@material-ui/core/Box"
+import Button from "@material-ui/core/Button"
 import Card from "@material-ui/core/Card"
 import CardActions from "@material-ui/core/CardActions"
 import CardContent from "@material-ui/core/CardContent"
-import Typography from "@material-ui/core/Typography";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {WordListInitial} from "../../../types/WordList";
-import {loadWordListsForLanguage} from "../../../utils/WordList";
+import Typography from "@material-ui/core/Typography"
+import makeStyles from "@material-ui/core/styles/makeStyles"
+
+// next
+import {useRouter} from "next/router"
+
+import {WordListInitial} from "../../../types/WordList"
+import {loadWordListsForLanguage} from "../../../utils/WordList"
 
 const usePracticeViewStyles = makeStyles({
   startPractice: {
@@ -21,18 +27,20 @@ const usePracticeViewStyles = makeStyles({
     textAlign: "left",
     backgroundColor: "#f2f2f2"
   },
-});
+})
 
 type StartPracticeByWordListCardProps = {
   wordList: WordListInitial,
 }
 
 const StartPracticeByWordListCard: React.FC<StartPracticeByWordListCardProps> = (props) => {
-  const classes = usePracticeViewStyles();
+  const classes = usePracticeViewStyles()
+  const router = useRouter()
 
   const onClickStart = async () => {
-
+    await router.push(`./${props.wordList.name}`)
   };
+
   return <Card className={classes.startPracticeWordListCard} variant={"outlined"}>
     <CardContent>
       <Typography variant={"h6"}>{props.wordList.name} ({props.wordList.wordCount} words)</Typography>
@@ -72,7 +80,7 @@ const PracticeWordListViewOverview: React.FC<PracticeWordListViewOverviewProps> 
     loadWordListsForLanguage("ENG")
       .then(wordLists => setWordLists(wordLists))
   })
-  return <Box mt={2} p={1}>
+  return <Box mt={2} p={1} style={{minWidth: 320, maxWidth: 500, margin: "auto", position:"relative"}}>
     <StartPracticeByWordList wordLists={wordLists} />
   </Box>
 };

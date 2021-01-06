@@ -1,6 +1,8 @@
-import {WordListInitial} from "../types/WordList";
+import {APIWordList, WordListInitial, WordListLoaded} from "../types/WordList";
 import {Language} from "../types/Language";
 import wordListsData from "../data/wordLists/wordLists.json"
+import fetch from "node-fetch";
+import {convertAPIWord} from "./Word";
 
 type WordListData = {
   [lang in Language]: any
@@ -32,4 +34,14 @@ export const loadWordListVersion1FromFile = (targetFile: string): Promise<WordLi
 
 export const loadWordListsForLanguage = async (language: Language): Promise<WordListInitial[]> => {
   return Promise.all(getWordListsData()[language].map((file: string) => loadWordListVersion1FromFile(file)))
+}
+
+export const loadWordListFromServer = async (wordListName: string): Promise<APIWordList> => {
+  const res = await fetch(`https://jpwords.blob.core.windows.net/word-lists/${wordListName}.json`)
+  return await res.json() as APIWordList
+}
+
+export const convertAPIWordList = (apiWordList: APIWordList): WordListLoaded => {
+  const wordCount = apiWordList.words.length
+  return Object.assign(apiWordList, {wordCount, words: apiWordList.words.map(apiWord => convertAPIWord(apiWord))})
 }

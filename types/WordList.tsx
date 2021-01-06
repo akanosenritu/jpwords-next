@@ -1,5 +1,5 @@
 import {Language} from "./Language";
-import {Word} from "./Word";
+import {APIWord, Word} from "./Word";
 
 export type WordListInitial = {
   status: "initial",
@@ -15,14 +15,18 @@ export type WordListInitial = {
 }
 
 export type WordListLoaded = {
-  status: "loaded",
-  name: string,
   uuid: string,
+  name: string,
   language: Language,
   words: Word[],
-  version: number,
   description: string,
   wordCount: number,
-  wordsFiles: string[],
-  hidden: boolean,
+}
+
+export type APIWordList = {
+  uuid: string,
+  name: string,
+  language: string,
+  words: APIWord[],
+  description: string
 }
