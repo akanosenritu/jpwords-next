@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
-import {Navigation} from "./Navigation";
+import {Navigation} from "./Navigations/Navigation";
 import {UserProvider} from "./Providers/UserProvider";
 import {PracticeHistoryProvider} from "./Providers/PracticeHistoryProvider";
 
@@ -19,7 +19,9 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
     <div>
       <UserProvider>
         <PracticeHistoryProvider>
-          <Navigation />
+          <div style={{marginBottom: 20}}>
+            <Navigation />
+          </div>
           <div style={{minWidth: 320, maxWidth: 700, margin: "auto", position:"relative"}}>
             {children}
           </div>

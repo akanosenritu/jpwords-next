@@ -1,11 +1,15 @@
-import React from "react"
-import {Box, Typography} from "@material-ui/core";
+import React, {useContext} from "react"
+
+// material-ui
+import Box from "@material-ui/core/Box"
 import CheckIcon from "@material-ui/icons/Check";
+import Typography from "@material-ui/core/Typography";
+
 import {useStyles} from "./Styles";
 import {getColors} from "../Styles";
 import {Word} from "../../../types/Word";
-import {initialConfigurations, useConfigurations} from "../../../utils/localStorage/Configurations";
 import {DisplayWordWithFurigana} from "../../DisplayWordWithFurigana";
+import {LanguageContext} from "../../Providers/LanguageProvider";
 
 type FinalProps = {
   word: Word,
@@ -22,10 +26,11 @@ export const Final: React.FC<FinalProps> = props => {
       props.onNext()
     }
   }
-  const {configurations} = useConfigurations(initialConfigurations)
+  const language = useContext(LanguageContext)
+
   return <div style={{textAlign: "center", width:"100%"}}>
     <Box mt={4}>
-      <Typography variant={"h4"}>{props.word.meaning[configurations.language]}</Typography>
+      <Typography variant={"h4"}>{props.word.meaning[language]}</Typography>
     </Box>
     <Box mt={4} style={{minHeight: 50}}>
       <Typography variant={"h5"}><DisplayWordWithFurigana word={props.word} /></Typography>
@@ -35,7 +40,7 @@ export const Final: React.FC<FinalProps> = props => {
         <input
           className={styles.answerInput} value={props.userInput} readOnly={true}
           autoFocus={true} onKeyPress={onKeyboardEvent2}
-          key={props.word.meaning[configurations.language]}
+          key={props.word.meaning[language]}
         />
         <CheckIcon className={styles.answerInputIcon} />
       </div>

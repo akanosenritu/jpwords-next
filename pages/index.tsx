@@ -1,15 +1,18 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import React from "react"
+import Layout from "../components/Layout"
+import useTranslation from "next-translate/useTranslation"
+import dynamic from "next/dynamic"
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
+type Props = {
+  language: string
+}
+
+const Page: React.FC<Props> = () => {
+  const {t, lang} = useTranslation("common")
+  const Content = dynamic(() => import(`../pageContents/${lang}/index.mdx`))
+  return <Layout title={t("Welcome")}>
+    <Content />
   </Layout>
-)
+}
 
-export default IndexPage
+export default Page
