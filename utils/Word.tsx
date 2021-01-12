@@ -1,9 +1,10 @@
 import {APIWord, Word} from "../types/Word";
-import {Language} from "../types/Language";
+import {Language, languages} from "../types/Language";
 
 export const convertAPIWord = (apiWord: APIWord): Word => {
   const meaningTranslations = apiWord.meaning
-  const meaning: {[lang in Language]: string} = {}
+  const meaning = languages
+    .reduce((acc, val) => ({...acc, [val]: ""}), {} as {[lang in Language]: string})
   for (const translation of meaningTranslations) {
     meaning[translation.language] = translation.text
   }

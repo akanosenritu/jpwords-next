@@ -1,7 +1,7 @@
 import React from "react"
 import {Language} from "../../types/Language";
 
-export const LanguageContext = React.createContext<Language>("ENG")
+export const LanguageContext = React.createContext<Language>("en")
 
 type LanguageProviderProps = {
   language: Language
