@@ -3,8 +3,8 @@ import fetch from "node-fetch";
 import {convertAPIWord} from "./Word";
 import {Language} from "../types/Language"
 
-export const loadWordListFromServer = async (wordListName: string): Promise<APIWordList> => {
-  const res = await fetch(`https://jpwords.blob.core.windows.net/word-lists/${wordListName}.json`)
+export const loadWordListFromServer = async (name: string, locale: string): Promise<APIWordList> => {
+  const res = await fetch(`https://jpwords.blob.core.windows.net/word-lists/${locale}_${name}.json`)
   return await res.json() as APIWordList
 }
 

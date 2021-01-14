@@ -8,10 +8,6 @@ import {H4, H5, H6} from "../components/Headers";
 import {Paragraph} from "../components/Paragraph";
 
 const components = {
-  h4: H4,
-  h5: H5,
-  h6: H6,
-  p: Paragraph
 }
 
 export default function MyApp(props) {

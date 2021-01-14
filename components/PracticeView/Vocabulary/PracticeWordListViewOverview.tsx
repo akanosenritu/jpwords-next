@@ -59,7 +59,7 @@ type StartPracticeByWordListProps = {
 }
 
 const StartPracticeByWordList: React.FC<StartPracticeByWordListProps> = (props) => {
-  return <Box mt={2} p={1}>
+  return <Box mt={2} p={1}>e
     <Box style={{borderLeft: "2px solid lightgray", paddingLeft: 10}}>
       <Typography variant={"h6"}>General Word Lists</Typography>
     </Box>

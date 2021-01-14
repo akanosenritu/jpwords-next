@@ -12,8 +12,9 @@ export const getStaticPaths: GetStaticPaths = async ({locales}) => {
   const data = await loadWordListDataFromAzure()
   const paths = locales.map(locale => {
     if (!data[locale]) return []
-    return data[locale].map(wordListSummary => wordListSummary.name)
-      .map(name => ({params: {name, locale}}))
+    return data[locale]
+      .map(wordListSummary => wordListSummary.name)
+      .map(name => ({params: {name}, locale}))
   }).reduce((acc, val) => acc.concat(val))
   return {paths, fallback: false}
 }
@@ -23,7 +24,7 @@ export const getStaticProps: GetStaticProps = async ({params, locale}) => {
   if (typeof params.name !== "string") return {props: {}}
   const name = params.name
   const language = locale as Language
-  const wordList = await loadWordListFromServer(name)
+  const wordList = await loadWordListFromServer(name, locale)
   return {
     props: {
       wordList: convertAPIWordList(wordList),
